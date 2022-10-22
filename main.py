@@ -12,3 +12,12 @@ url = "https://www.pokemon.com/us/pokedex/1"
 req = requests.get(url, headers)
 
 soup = BeautifulSoup(req.content, 'html.parser')
+
+# Pokemon name and number
+pokemon_name_div = soup.find("div", "pokedex-pokemon-pagination-title")
+pokemon_name_div_text = pokemon_name_div.div.text.strip().splitlines()
+pokemon_name = pokemon_name_div_text[0]
+pokemon_number = pokemon_name_div_text[1].strip()
+# print(pokemon_name)
+# print(pokemon_number)
+# // Pokemon Name and Number
