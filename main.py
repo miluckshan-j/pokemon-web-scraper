@@ -21,3 +21,12 @@ pokemon_number = pokemon_name_div_text[1].strip()
 # print(pokemon_name)
 # print(pokemon_number)
 # // Pokemon Name and Number
+
+# Pokemon formes and images
+pokemon_images_div = soup.find("div", "profile-images")
+pokemon_images_div_images = pokemon_images_div.find_all("img")
+for pokemon_image in pokemon_images_div_images:
+    print()
+    # print(pokemon_image['alt'])
+    # print(pokemon_image['src'])
+# // Pokemon formes and images
