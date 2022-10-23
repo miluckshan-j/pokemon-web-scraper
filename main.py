@@ -45,3 +45,10 @@ for pokemon_description_forme in pokemon_description_div_version_div:
         "p", "version-y").get_text().strip()
     # print(pokemon_description_x)
     # print(pokemon_description_y)
+
+# Pokemon type
+pokemon_type_div = soup.find("div", "dtm-type")
+pokemon_type_div_list = pokemon_type_div.find_all("li")
+for pokemon_type in pokemon_type_div_list:
+    print()
+    # print(pokemon_type.a.get_text())
