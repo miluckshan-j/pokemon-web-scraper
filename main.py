@@ -67,3 +67,25 @@ pokemon_body_div_list = pokemon_body_div.div.find_all("li")
 # print(pokemon_body_div_list[0].find("span", "attribute-value").get_text())
 # Weight
 # print(pokemon_body_div_list[1].find("span", "attribute-value").get_text())
+
+# Pokemon evolution
+pokemon_evolution_list = soup.find("ul", "evolution-profile")
+# print(pokemon_evolution_list.prettify())
+pokemon_evolution_first = pokemon_evolution_list.find("li", "first")
+pokemon_evolution_middle = pokemon_evolution_list.find("li", "middle")
+pokemon_evolution_last = pokemon_evolution_list.find("li", "last")
+print("*****************************************************************************")
+if pokemon_evolution_first is not None:
+    print(pokemon_evolution_first.img['src'])
+    print(pokemon_evolution_first.h3.text.split()[0])
+    print(pokemon_evolution_first.h3.text.split()[1])
+    pokemon_evolution_first_attributes = pokemon_evolution_first.find_all("li")
+    for pokemon_evolution_first_attribute in pokemon_evolution_first_attributes:
+        print(pokemon_evolution_first_attribute.text)   
+print("*****************************************************************************")
+# if pokemon_evolution_middle is not None:
+#     print(pokemon_evolution_middle.prettify())
+# print("*****************************************************************************")
+# if pokemon_evolution_last is not None:
+#     print(pokemon_evolution_last.prettify())
+# print("*****************************************************************************")
