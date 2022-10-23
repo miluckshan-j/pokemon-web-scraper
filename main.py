@@ -20,13 +20,28 @@ pokemon_name = pokemon_name_div_text[0]
 pokemon_number = pokemon_name_div_text[1].strip()
 # print(pokemon_name)
 # print(pokemon_number)
-# // Pokemon Name and Number
 
 # Pokemon formes and images
 pokemon_images_div = soup.find("div", "profile-images")
 pokemon_images_div_images = pokemon_images_div.find_all("img")
+# Multiple images based on forme
 for pokemon_image in pokemon_images_div_images:
     print()
+    # Forme
     # print(pokemon_image['alt'])
+    # Image
     # print(pokemon_image['src'])
-# // Pokemon formes and images
+
+# Pokemon description
+pokemon_description_div = soup.find("div", "pokedex-pokemon-details-right")
+pokemon_description_div_version_div = pokemon_description_div.find_all(
+    "div", "version-descriptions")
+# Multiple descriptions for different formes
+for pokemon_description_forme in pokemon_description_div_version_div:
+    # Different description for each versions
+    pokemon_description_x = pokemon_description_forme.find(
+        "p", "version-x").get_text().strip()
+    pokemon_description_y = pokemon_description_forme.find(
+        "p", "version-y").get_text().strip()
+    # print(pokemon_description_x)
+    # print(pokemon_description_y)
