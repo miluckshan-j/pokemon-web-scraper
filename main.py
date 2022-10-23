@@ -59,3 +59,11 @@ pokemon_weaknesses_div_list = pokemon_weaknesses_div.find_all("li")
 for pokemon_weakness in pokemon_weaknesses_div_list:
     print()
     # print(pokemon_weakness.a.span.text.rsplit()[0])
+
+# Pokemon height and weight
+pokemon_body_div = soup.find("div", "pokemon-ability-info")
+pokemon_body_div_list = pokemon_body_div.div.find_all("li")
+# Height
+# print(pokemon_body_div_list[0].find("span", "attribute-value").get_text())
+# Weight
+# print(pokemon_body_div_list[1].find("span", "attribute-value").get_text())
