@@ -52,3 +52,10 @@ pokemon_type_div_list = pokemon_type_div.find_all("li")
 for pokemon_type in pokemon_type_div_list:
     print()
     # print(pokemon_type.a.get_text())
+
+# Pokemon weaknesses
+pokemon_weaknesses_div = soup.find("div", "dtm-weaknesses")
+pokemon_weaknesses_div_list = pokemon_weaknesses_div.find_all("li")
+for pokemon_weakness in pokemon_weaknesses_div_list:
+    print()
+    # print(pokemon_weakness.a.span.text.rsplit()[0])
