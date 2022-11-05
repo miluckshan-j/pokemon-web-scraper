@@ -138,3 +138,15 @@ if pokemon_evolution_last is not None:
         for pokemon_evolution_last_list_children_type in pokemon_evolution_last_list_children_attribute_list:
             print()
             # print(pokemon_evolution_last_list_children_type.get_text())
+
+# Pokemon cards
+pokemon_cards_list = soup.find(
+    "section", id="trading-card-slider").find("ul", "slider").find_all("li")
+for pokemon_card in pokemon_cards_list:
+    print()
+    # print(pokemon_card.a.find("div", "card-img").img['data-preload-src'])
+    # card_details = pokemon_card.a.find("div", "card-name")
+    # print(card_details.h5.get_text())
+    # print(card_details.find("span", "card-number").get_text())
+    # print(card_details.img['src'])
+    # print(card_details.find("span", "expansion-name").get_text())
