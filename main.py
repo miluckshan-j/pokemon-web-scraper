@@ -47,26 +47,32 @@ for pokemon_description_forme in pokemon_description_div_version_div:
     # print(pokemon_description_y)
 
 # Pokemon type
-pokemon_type_div = soup.find("div", "dtm-type")
-pokemon_type_div_list = pokemon_type_div.find_all("li")
-for pokemon_type in pokemon_type_div_list:
-    print()
-    # print(pokemon_type.a.get_text())
+pokemon_type_div = soup.find_all("div", "dtm-type")
+for pokemon_type_div_forme in pokemon_type_div:
+    # print("--- Forme ---")
+    pokemon_type_div_list = pokemon_type_div_forme.find_all("li")
+    for pokemon_type in pokemon_type_div_list:
+        print()
+        # print(pokemon_type.a.get_text())
 
 # Pokemon weaknesses
-pokemon_weaknesses_div = soup.find("div", "dtm-weaknesses")
-pokemon_weaknesses_div_list = pokemon_weaknesses_div.find_all("li")
-for pokemon_weakness in pokemon_weaknesses_div_list:
-    print()
-    # print(pokemon_weakness.a.span.text.rsplit()[0])
+pokemon_weaknesses_div = soup.find_all("div", "dtm-weaknesses")
+for pokemon_weaknesses_div_forme in pokemon_weaknesses_div:
+    # print("--- Forme ---")
+    pokemon_weaknesses_div_list = pokemon_weaknesses_div_forme.find_all("li")
+    for pokemon_weakness in pokemon_weaknesses_div_list:
+        print()
+        # print(pokemon_weakness.a.span.text.rsplit()[0])
 
 # Pokemon height and weight
-pokemon_body_div = soup.find("div", "pokemon-ability-info")
-pokemon_body_div_list = pokemon_body_div.div.find_all("li")
-# Height
-# print(pokemon_body_div_list[0].find("span", "attribute-value").get_text())
-# Weight
-# print(pokemon_body_div_list[1].find("span", "attribute-value").get_text())
+pokemon_body_div = soup.find_all("div", "pokemon-ability-info")
+for pokemon_body_div_forme in pokemon_body_div:
+    # print("--- Forme ---")
+    pokemon_body_div_list = pokemon_body_div_forme.div.find_all("li")
+    # Height
+    # print(pokemon_body_div_list[0].find("span", "attribute-value").get_text())
+    # Weight
+    # print(pokemon_body_div_list[1].find("span", "attribute-value").get_text())
 
 # Pokemon evolution
 pokemon_evolution_list = soup.find("ul", "evolution-profile")
