@@ -67,3 +67,74 @@ pokemon_body_div_list = pokemon_body_div.div.find_all("li")
 # print(pokemon_body_div_list[0].find("span", "attribute-value").get_text())
 # Weight
 # print(pokemon_body_div_list[1].find("span", "attribute-value").get_text())
+
+# Pokemon evolution
+pokemon_evolution_list = soup.find("ul", "evolution-profile")
+pokemon_evolution_first = pokemon_evolution_list.find("li", "first")
+pokemon_evolution_middle = pokemon_evolution_list.find("li", "middle")
+pokemon_evolution_last = pokemon_evolution_list.find("li", "last")
+# print("--- First ---")
+if pokemon_evolution_first is not None:
+    # print(pokemon_evolution_first.img['src'])
+    # print(pokemon_evolution_first.h3.text.split()[0])
+    # print(pokemon_evolution_first.h3.text.split()[1])
+    pokemon_evolution_first_attributes = pokemon_evolution_first.find_all("li")
+    for pokemon_evolution_first_attribute in pokemon_evolution_first_attributes:
+        print()
+        # print(pokemon_evolution_first_attribute.text)
+# print("--- Middle ---")
+if pokemon_evolution_middle is not None:
+    pokemon_evolution_middle_list = pokemon_evolution_middle.find_all("li")
+    pokemon_evolution_middle_list_children = pokemon_evolution_middle
+    # Evolution Images
+    pokemon_evolution_middle_list_children_images = pokemon_evolution_middle_list_children.find_all(
+        "img")
+    for pokemon_evolution_middle_list_children_image in pokemon_evolution_middle_list_children_images:
+        print()
+        # print(pokemon_evolution_middle_list_children_image['src'])
+    # Evolution name and number
+    pokemon_evolution_middle_list_children_details = pokemon_evolution_middle_list_children.find_all(
+        "h3")
+    for pokemon_evolution_middle_list_children_detail in pokemon_evolution_middle_list_children_details:
+        print()
+        # print(pokemon_evolution_middle_list_children_detail.get_text().rsplit())
+    # Evolution types
+    pokemon_evolution_middle_list_children_attributes_list = pokemon_evolution_middle_list_children.find_all(
+        "ul", "evolution-attributes")
+    # An Evolution
+    for pokemon_evolution_middle_list_children_attributes in pokemon_evolution_middle_list_children_attributes_list:
+        pokemon_evolution_middle_list_children_attribute_list = pokemon_evolution_middle_list_children_attributes.find_all(
+            "li")
+        # print("-- Types --")
+        # Types of particular evolution
+        for pokemon_evolution_middle_list_children_type in pokemon_evolution_middle_list_children_attribute_list:
+            print()
+            # print(pokemon_evolution_middle_list_children_type.get_text())
+# print("--- Last ---")
+if pokemon_evolution_last is not None:
+    pokemon_evolution_last_list = pokemon_evolution_last.find_all("li")
+    pokemon_evolution_last_list_children = pokemon_evolution_last
+    # Evolution Images
+    pokemon_evolution_last_list_children_images = pokemon_evolution_last_list_children.find_all(
+        "img")
+    for pokemon_evolution_last_list_children_image in pokemon_evolution_last_list_children_images:
+        print()
+        # print(pokemon_evolution_last_list_children_image['src'])
+    # Evolution name and number
+    pokemon_evolution_last_list_children_details = pokemon_evolution_last_list_children.find_all(
+        "h3")
+    for pokemon_evolution_last_list_children_detail in pokemon_evolution_last_list_children_details:
+        print()
+        # print(pokemon_evolution_last_list_children_detail.get_text().rsplit())
+    # Evolution types
+    pokemon_evolution_last_list_children_attributes_list = pokemon_evolution_last_list_children.find_all(
+        "ul", "evolution-attributes")
+    # An Evolution
+    for pokemon_evolution_last_list_children_attributes in pokemon_evolution_last_list_children_attributes_list:
+        pokemon_evolution_last_list_children_attribute_list = pokemon_evolution_last_list_children_attributes.find_all(
+            "li")
+        # print("-- Types --")
+        # Types of particular evolution
+        for pokemon_evolution_last_list_children_type in pokemon_evolution_last_list_children_attribute_list:
+            print()
+            # print(pokemon_evolution_last_list_children_type.get_text())
