@@ -14,15 +14,10 @@ headers = {
 first_pokemon_number = 1
 last_pokemon_number = 905
 
-for current_pokemon_number in range(first_pokemon_number, last_pokemon_number+1):
-    url = f"https://www.pokemon.com/us/pokedex/{current_pokemon_number}"
-    req = requests.get(url, headers)
+pokemon = {}
 
-    soup = BeautifulSoup(req.content, 'html.parser')
 
-    pokemon = {}
-
-    # Pokemon name and number
+def getNameAndNumbers(soup):
     pokemon_name_div = soup.find("div", "pokedex-pokemon-pagination-title")
     pokemon_name_div_text = pokemon_name_div.div.text.strip().splitlines()
     pokemon_name = pokemon_name_div_text[0]
@@ -30,7 +25,8 @@ for current_pokemon_number in range(first_pokemon_number, last_pokemon_number+1)
     pokemon["name"] = pokemon_name
     pokemon["number"] = pokemon_number
 
-    # Pokemon formes and images
+
+def getFormes(soup):
     pokemon["forme"] = []
     pokemon_images_div = soup.find("div", "profile-images")
     pokemon_images_div_images = pokemon_images_div.find_all("img")
@@ -41,7 +37,8 @@ for current_pokemon_number in range(first_pokemon_number, last_pokemon_number+1)
         # Image
         pokemon["forme"][index].update({"image": pokemon_image['src']})
 
-    # Pokemon description
+
+def getDescriptions(soup):
     pokemon_description_div = soup.find("div", "pokedex-pokemon-details-right")
     pokemon_description_div_version_div = pokemon_description_div.find_all(
         "div", "version-descriptions")
@@ -57,7 +54,8 @@ for current_pokemon_number in range(first_pokemon_number, last_pokemon_number+1)
         descriptions.append(pokemon_description_y)
         pokemon["forme"][index].update({"descriptions": descriptions})
 
-    # Pokemon type
+
+def getTypes(soup):
     pokemon_type_div = soup.find_all("div", "dtm-type")
     for index, pokemon_type_div_forme in enumerate(pokemon_type_div):
         types = []
@@ -66,7 +64,8 @@ for current_pokemon_number in range(first_pokemon_number, last_pokemon_number+1)
             types.append(pokemon_type.a.get_text())
         pokemon["forme"][index].update({"types": types})
 
-    # Pokemon weaknesses
+
+def getWeaknesses(soup):
     pokemon_weaknesses_div = soup.find_all("div", "dtm-weaknesses")
     for index, pokemon_weaknesses_div_forme in enumerate(pokemon_weaknesses_div):
         weaknesses = []
@@ -76,7 +75,8 @@ for current_pokemon_number in range(first_pokemon_number, last_pokemon_number+1)
             weaknesses.append(pokemon_weakness.a.span.text.strip())
             pokemon["forme"][index].update({"weaknesses": weaknesses})
 
-    # Pokemon height and weight
+
+def getHeightAndWeight(soup):
     pokemon_body_div = soup.find_all("div", "pokemon-ability-info")
     for index, pokemon_body_div_forme in enumerate(pokemon_body_div):
         pokemon_body_div_list = pokemon_body_div_forme.div.find_all("li")
@@ -87,7 +87,8 @@ for current_pokemon_number in range(first_pokemon_number, last_pokemon_number+1)
         pokemon["forme"][index].update(
             {"weight": pokemon_body_div_list[1].find("span", "attribute-value").get_text()})
 
-    # Pokemon evolution
+
+def getEvolutions(soup):
     pokemon_evolution_list = soup.find("ul", "evolution-profile")
     pokemon_evolution_first = pokemon_evolution_list.find("li", "first")
     pokemon_evolution_middle = pokemon_evolution_list.find("li", "middle")
@@ -106,7 +107,6 @@ for current_pokemon_number in range(first_pokemon_number, last_pokemon_number+1)
     # Middle evolutions
     middle_evolutions = []
     if pokemon_evolution_middle is not None:
-        pokemon_evolution_middle_list = pokemon_evolution_middle.find_all("li")
         pokemon_evolution_middle_list_children = pokemon_evolution_middle
         # Evolution images
         pokemon_evolution_middle_list_children_images = pokemon_evolution_middle_list_children.find_all(
@@ -136,7 +136,6 @@ for current_pokemon_number in range(first_pokemon_number, last_pokemon_number+1)
     # Last evolutions
     last_evolutions = []
     if pokemon_evolution_last is not None:
-        pokemon_evolution_last_list = pokemon_evolution_last.find_all("li")
         pokemon_evolution_last_list_children = pokemon_evolution_last
         # Evolution images
         pokemon_evolution_last_list_children_images = pokemon_evolution_last_list_children.find_all(
@@ -163,22 +162,55 @@ for current_pokemon_number in range(first_pokemon_number, last_pokemon_number+1)
                 evolution_types.append(
                     pokemon_evolution_last_list_children_type.get_text())
             last_evolutions[index].update({"types": evolution_types})
-
     pokemon["evolution"] = {"first": first_evolutions}
     pokemon["evolution"].update({"middle": middle_evolutions})
     pokemon["evolution"].update({"last": last_evolutions})
 
-    # Pokemon cards
+
+def getCards(soup):
     cards = []
     pokemon_cards_list = soup.find(
         "section", id="trading-card-slider").find("ul", "slider").find_all("li")
     for pokemon_card in pokemon_cards_list:
         card_details = pokemon_card.a.find("div", "card-name")
-        cards.append({"name": card_details.h5.get_text(), "number": card_details.find("span", "card-number").get_text(), "image": pokemon_card.a.find("div",
-                                                                                                                                                      "card-img").img['data-preload-src'], "expansionSymbol": card_details.img['src'], "expansionName":  card_details.find("span", "expansion-name").get_text()})
-
+        cards.append({
+            "name": card_details.h5.get_text(),
+            "number": card_details.find("span", "card-number").get_text(),
+            "image": pokemon_card.a.find("div", "card-img").img['data-preload-src'],
+            "expansionSymbol": card_details.img['src'],
+            "expansionName":  card_details.find("span", "expansion-name").get_text()})
     pokemon["cards"] = cards
 
-    print(json.dumps(pokemon, indent=4))
-    print("*********************************************")
+
+for current_pokemon_number in range(first_pokemon_number, last_pokemon_number+1):
+    url = f"https://www.pokemon.com/us/pokedex/{current_pokemon_number}"
+    req = requests.get(url, headers)
+
+    soup = BeautifulSoup(req.content, 'html.parser')
+
+    # Pokemon name and number
+    getNameAndNumbers(soup)
+
+    # Pokemon formes and images
+    getFormes(soup)
+
+    # Pokemon description
+    getDescriptions(soup)
+
+    # Pokemon type
+    getTypes(soup)
+
+    # Pokemon weaknesses
+    getWeaknesses(soup)
+
+    # Pokemon height and weight
+    getHeightAndWeight(soup)
+
+    # Pokemon evolution
+    getEvolutions(soup)
+
+    # Pokemon cards
+    getCards(soup)
+
+    print(json.dumps(pokemon, indent=4), ",")
     time.sleep(10)
