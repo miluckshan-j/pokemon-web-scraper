@@ -18,149 +18,149 @@ pokemon = {}
 
 
 def getNameAndNumbers(soup):
-    pokemon_name_div = soup.find("div", "pokedex-pokemon-pagination-title")
-    pokemon_name_div_text = pokemon_name_div.div.text.strip().splitlines()
-    pokemon_name = pokemon_name_div_text[0]
-    pokemon_number = pokemon_name_div_text[1].strip()
-    pokemon["name"] = pokemon_name
-    pokemon["number"] = pokemon_number
+    name_div = soup.find("div", "pokedex-pokemon-pagination-title")
+    name_div_text = name_div.div.text.strip().splitlines()
+    name = name_div_text[0]
+    number = name_div_text[1].strip()
+    pokemon["name"] = name
+    pokemon["number"] = number
 
 
 def getFormes(soup):
     pokemon["forme"] = []
-    pokemon_images_div = soup.find("div", "profile-images")
-    pokemon_images_div_images = pokemon_images_div.find_all("img")
+    images_div = soup.find("div", "profile-images")
+    images_div_images = images_div.find_all("img")
     # Multiple images based on forme
-    for index, pokemon_image in enumerate(pokemon_images_div_images):
+    for index, image in enumerate(images_div_images):
         # Forme
-        pokemon["forme"].insert(index, {"forme": pokemon_image['alt']})
+        pokemon["forme"].insert(index, {"forme": image['alt']})
         # Image
-        pokemon["forme"][index].update({"image": pokemon_image['src']})
+        pokemon["forme"][index].update({"image": image['src']})
 
 
 def getDescriptions(soup):
-    pokemon_description_div = soup.find("div", "pokedex-pokemon-details-right")
-    pokemon_description_div_version_div = pokemon_description_div.find_all(
+    description_div = soup.find("div", "pokedex-pokemon-details-right")
+    description_div_version_div = description_div.find_all(
         "div", "version-descriptions")
     # Multiple descriptions for different formes
-    for index, pokemon_description_forme in enumerate(pokemon_description_div_version_div):
+    for index, description_forme in enumerate(description_div_version_div):
         descriptions = []
         # Different description for each versions
-        pokemon_description_x = pokemon_description_forme.find(
+        description_x = description_forme.find(
             "p", "version-x").get_text().strip()
-        pokemon_description_y = pokemon_description_forme.find(
+        description_y = description_forme.find(
             "p", "version-y").get_text().strip()
-        descriptions.append(pokemon_description_x)
-        descriptions.append(pokemon_description_y)
+        descriptions.append(description_x)
+        descriptions.append(description_y)
         pokemon["forme"][index].update({"descriptions": descriptions})
 
 
 def getTypes(soup):
-    pokemon_type_div = soup.find_all("div", "dtm-type")
-    for index, pokemon_type_div_forme in enumerate(pokemon_type_div):
+    type_div = soup.find_all("div", "dtm-type")
+    for index, type_div_forme in enumerate(type_div):
         types = []
-        pokemon_type_div_list = pokemon_type_div_forme.find_all("li")
-        for pokemon_type in pokemon_type_div_list:
-            types.append(pokemon_type.a.get_text())
+        type_div_list = type_div_forme.find_all("li")
+        for type in type_div_list:
+            types.append(type.a.get_text())
         pokemon["forme"][index].update({"types": types})
 
 
 def getWeaknesses(soup):
-    pokemon_weaknesses_div = soup.find_all("div", "dtm-weaknesses")
-    for index, pokemon_weaknesses_div_forme in enumerate(pokemon_weaknesses_div):
+    weaknesses_div = soup.find_all("div", "dtm-weaknesses")
+    for index, weaknesses_div_forme in enumerate(weaknesses_div):
         weaknesses = []
-        pokemon_weaknesses_div_list = pokemon_weaknesses_div_forme.find_all(
+        weaknesses_div_list = weaknesses_div_forme.find_all(
             "li")
-        for pokemon_weakness in pokemon_weaknesses_div_list:
-            weaknesses.append(pokemon_weakness.a.span.text.strip())
+        for weakness in weaknesses_div_list:
+            weaknesses.append(weakness.a.span.text.strip())
             pokemon["forme"][index].update({"weaknesses": weaknesses})
 
 
 def getHeightAndWeight(soup):
-    pokemon_body_div = soup.find_all("div", "pokemon-ability-info")
-    for index, pokemon_body_div_forme in enumerate(pokemon_body_div):
-        pokemon_body_div_list = pokemon_body_div_forme.div.find_all("li")
+    body_div = soup.find_all("div", "pokemon-ability-info")
+    for index, body_div_forme in enumerate(body_div):
+        body_div_list = body_div_forme.div.find_all("li")
         # Height
         pokemon["forme"][index].update(
-            {"height": pokemon_body_div_list[0].find("span", "attribute-value").get_text()})
+            {"height": body_div_list[0].find("span", "attribute-value").get_text()})
         # Weight
         pokemon["forme"][index].update(
-            {"weight": pokemon_body_div_list[1].find("span", "attribute-value").get_text()})
+            {"weight": body_div_list[1].find("span", "attribute-value").get_text()})
 
 
 def getEvolutions(soup):
-    pokemon_evolution_list = soup.find("ul", "evolution-profile")
-    pokemon_evolution_first = pokemon_evolution_list.find("li", "first")
-    pokemon_evolution_middle = pokemon_evolution_list.find("li", "middle")
-    pokemon_evolution_last = pokemon_evolution_list.find("li", "last")
+    evolution_list = soup.find("ul", "evolution-profile")
+    evolution_first = evolution_list.find("li", "first")
+    evolution_middle = evolution_list.find("li", "middle")
+    evolution_last = evolution_list.find("li", "last")
     # First evolution
     first_evolutions = []
-    if pokemon_evolution_first is not None:
-        first_evolutions.append({"name": pokemon_evolution_first.h3.text.split()[
-            0], "image": pokemon_evolution_first.img['src'], "number": pokemon_evolution_first.h3.text.split()[1]})
-        pokemon_evolution_first_attributes = pokemon_evolution_first.find_all(
+    if evolution_first is not None:
+        first_evolutions.append({"name": evolution_first.h3.text.split()[
+            0], "image": evolution_first.img['src'], "number": evolution_first.h3.text.split()[1]})
+        evolution_first_attributes = evolution_first.find_all(
             "li")
         evolution_types = []
-        for pokemon_evolution_first_attribute in pokemon_evolution_first_attributes:
-            evolution_types.append(pokemon_evolution_first_attribute.text)
+        for evolution_first_attribute in evolution_first_attributes:
+            evolution_types.append(evolution_first_attribute.text)
         first_evolutions[0].update({"types": evolution_types})
     # Middle evolutions
     middle_evolutions = []
-    if pokemon_evolution_middle is not None:
-        pokemon_evolution_middle_list_children = pokemon_evolution_middle
+    if evolution_middle is not None:
+        evolution_middle_list_children = evolution_middle
         # Evolution images
-        pokemon_evolution_middle_list_children_images = pokemon_evolution_middle_list_children.find_all(
+        evolution_middle_list_children_images = evolution_middle_list_children.find_all(
             "img")
-        for index, pokemon_evolution_middle_list_children_image in enumerate(pokemon_evolution_middle_list_children_images):
+        for index, evolution_middle_list_children_image in enumerate(evolution_middle_list_children_images):
             middle_evolutions.append({"image":
-                                      pokemon_evolution_middle_list_children_image['src']})
+                                      evolution_middle_list_children_image['src']})
         # Evolution name and number
-        pokemon_evolution_middle_list_children_details = pokemon_evolution_middle_list_children.find_all(
+        evolution_middle_list_children_details = evolution_middle_list_children.find_all(
             "h3")
-        for index, pokemon_evolution_middle_list_children_detail in enumerate(pokemon_evolution_middle_list_children_details):
-            middle_evolutions[index].update({"name": pokemon_evolution_middle_list_children_detail.get_text(
-            ).rsplit()[0], "number": pokemon_evolution_middle_list_children_detail.get_text().rsplit()[1]})
+        for index, evolution_middle_list_children_detail in enumerate(evolution_middle_list_children_details):
+            middle_evolutions[index].update({"name": evolution_middle_list_children_detail.get_text(
+            ).rsplit()[0], "number": evolution_middle_list_children_detail.get_text().rsplit()[1]})
         # Evolution types
-        pokemon_evolution_middle_list_children_attributes_list = pokemon_evolution_middle_list_children.find_all(
+        evolution_middle_list_children_attributes_list = evolution_middle_list_children.find_all(
             "ul", "evolution-attributes")
         # An evolution
-        for index, pokemon_evolution_middle_list_children_attributes in enumerate(pokemon_evolution_middle_list_children_attributes_list):
-            pokemon_evolution_middle_list_children_attribute_list = pokemon_evolution_middle_list_children_attributes.find_all(
+        for index, evolution_middle_list_children_attributes in enumerate(evolution_middle_list_children_attributes_list):
+            evolution_middle_list_children_attribute_list = evolution_middle_list_children_attributes.find_all(
                 "li")
             # Types of particular evolution
             evolution_types = []
-            for pokemon_evolution_middle_list_children_type in pokemon_evolution_middle_list_children_attribute_list:
+            for evolution_middle_list_children_type in evolution_middle_list_children_attribute_list:
                 evolution_types.append(
-                    pokemon_evolution_middle_list_children_type.get_text())
+                    evolution_middle_list_children_type.get_text())
             middle_evolutions[index].update({"types": evolution_types})
     # Last evolutions
     last_evolutions = []
-    if pokemon_evolution_last is not None:
-        pokemon_evolution_last_list_children = pokemon_evolution_last
+    if evolution_last is not None:
+        evolution_last_list_children = evolution_last
         # Evolution images
-        pokemon_evolution_last_list_children_images = pokemon_evolution_last_list_children.find_all(
+        evolution_last_list_children_images = evolution_last_list_children.find_all(
             "img")
-        for index, pokemon_evolution_last_list_children_image in enumerate(pokemon_evolution_last_list_children_images):
+        for index, evolution_last_list_children_image in enumerate(evolution_last_list_children_images):
             last_evolutions.append(
-                {"image": pokemon_evolution_last_list_children_image['src']})
+                {"image": evolution_last_list_children_image['src']})
         # Evolution name and number
-        pokemon_evolution_last_list_children_details = pokemon_evolution_last_list_children.find_all(
+        evolution_last_list_children_details = evolution_last_list_children.find_all(
             "h3")
-        for index, pokemon_evolution_last_list_children_detail in enumerate(pokemon_evolution_last_list_children_details):
-            last_evolutions[index].update({"name": pokemon_evolution_last_list_children_detail.get_text(
-            ).rsplit()[0], "number": pokemon_evolution_last_list_children_detail.get_text().rsplit()[1]})
+        for index, evolution_last_list_children_detail in enumerate(evolution_last_list_children_details):
+            last_evolutions[index].update({"name": evolution_last_list_children_detail.get_text(
+            ).rsplit()[0], "number": evolution_last_list_children_detail.get_text().rsplit()[1]})
         # Evolution types
-        pokemon_evolution_last_list_children_attributes_list = pokemon_evolution_last_list_children.find_all(
+        evolution_last_list_children_attributes_list = evolution_last_list_children.find_all(
             "ul", "evolution-attributes")
         # An evolution
-        for index, pokemon_evolution_last_list_children_attributes in enumerate(pokemon_evolution_last_list_children_attributes_list):
-            pokemon_evolution_last_list_children_attribute_list = pokemon_evolution_last_list_children_attributes.find_all(
+        for index, evolution_last_list_children_attributes in enumerate(evolution_last_list_children_attributes_list):
+            evolution_last_list_children_attribute_list = evolution_last_list_children_attributes.find_all(
                 "li")
             # Types of particular evolution
             evolution_types = []
-            for pokemon_evolution_last_list_children_type in pokemon_evolution_last_list_children_attribute_list:
+            for evolution_last_list_children_type in evolution_last_list_children_attribute_list:
                 evolution_types.append(
-                    pokemon_evolution_last_list_children_type.get_text())
+                    evolution_last_list_children_type.get_text())
             last_evolutions[index].update({"types": evolution_types})
     pokemon["evolution"] = {"first": first_evolutions}
     pokemon["evolution"].update({"middle": middle_evolutions})
@@ -169,21 +169,21 @@ def getEvolutions(soup):
 
 def getCards(soup):
     cards = []
-    pokemon_cards_list = soup.find(
+    cards_list = soup.find(
         "section", id="trading-card-slider").find("ul", "slider").find_all("li")
-    for pokemon_card in pokemon_cards_list:
-        card_details = pokemon_card.a.find("div", "card-name")
+    for card in cards_list:
+        card_details = card.a.find("div", "card-name")
         cards.append({
             "name": card_details.h5.get_text(),
             "number": card_details.find("span", "card-number").get_text(),
-            "image": pokemon_card.a.find("div", "card-img").img['data-preload-src'],
+            "image": card.a.find("div", "card-img").img['data-preload-src'],
             "expansionSymbol": card_details.img['src'],
             "expansionName":  card_details.find("span", "expansion-name").get_text()})
     pokemon["cards"] = cards
 
 
-for current_pokemon_number in range(first_pokemon_number, last_pokemon_number+1):
-    url = f"https://www.pokemon.com/us/pokedex/{current_pokemon_number}"
+for current_number in range(first_pokemon_number, last_pokemon_number+1):
+    url = f"https://www.pokemon.com/us/pokedex/{current_number}"
     req = requests.get(url, headers)
 
     soup = BeautifulSoup(req.content, 'html.parser')
